@@ -35,14 +35,15 @@ public class Console {
         ShoppingManager shopMan = new ShoppingManager(connection);
         
         //since schema doesn't exist yet, leave the code below commented out...
-        
-        /*String command = "";
+        /*
+        String command = "";
         Scanner scnr = new Scanner(System.in);
         while(command != "quit") {
-        	System.out.println("Sign in as a customer or administrator.\n"
+        	System.out.println("Sign in as a customer or administrator. Or register as a customer.\n"
         			+ "Commands: \n "
         			+ "customer <username> <password>\n"
-        			+ "admin <username> <password>\n");
+        			+ "admin <username> <password>\n"
+        			+ "register <username> <password> <name> <address>\n");
         	command = scnr.nextLine();
         	String[] splitCmd = command.split(" ");
         	
@@ -74,6 +75,10 @@ public class Console {
 	        		else {
 	        			System.out.println("Invalid username or passsword");
 	        		}
+	        	}
+	        	else if(splitCmd[0].equals("register")) {
+	        		stmt.execute("insert into Customers values ('"+splitCmd[3]+"','"+splitCmd[1]+"','"+splitCmd[2]+"','"+splitCmd[4]+"')");
+	        		System.out.println("Registration Successful!");
 	        	}
 	        	else if(splitCmd[0].equals("quit")) {
 	        		System.out.println("Program Terminated");
