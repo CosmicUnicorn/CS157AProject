@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.util.Scanner;
 import java.sql.*;
 
+//Is run when admin signs in
 public class InventoryManager {
 	
 	private Connection conn;
@@ -69,8 +70,6 @@ public class InventoryManager {
 	private void viewData(String tableName) {
 		try {
 			System.out.println("Showing data for " + tableName + "...");
-			
-			//Database interaction goes here
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select * from " + tableName);
 			printResult(rs);
