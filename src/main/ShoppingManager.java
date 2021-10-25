@@ -13,13 +13,15 @@ public class ShoppingManager {
 	private Statement stmt;
 	private ResultSet rs;
 	private ResultSetMetaData rsmd;
+	private int customerID;
 	
 	public ShoppingManager(Connection conn) {
 		this.conn = conn;
 		this.scnr = new Scanner(System.in);
 	}
 	
-	public void run() {
+	public void run(int customerID) {
+		this.customerID = customerID;
 		System.out.println("Starting Shopping Manager Console...");
 		printCommands();
 		
@@ -38,7 +40,8 @@ public class ShoppingManager {
 	private void parseCommand(String comm) {
 		String[] splitCmd = comm.split(" ");
 		switch (splitCmd[0]) {
-			
+			case "new-transaction": newTransaction(splitCmd[2]);
+				break;
 			//other commands go here
 			default: System.out.println("Invalid Command: " + splitCmd[0]);
 				break;
@@ -47,6 +50,19 @@ public class ShoppingManager {
 	
 	private void printCommands() {
 		System.out.println("Sample Commands:\n"
+				+ "new-transaction args: productID\n"
 				+ "    ");
+	}
+	
+	private void newTransaction(String productID) {
+		try {
+			int prodID = Integer.parseInt(productID);
+			
+			//Database interaction goes here
+			
+			System.out.println("Successful Transaction!");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
 	}
 }

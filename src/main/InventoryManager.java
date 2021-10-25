@@ -37,8 +37,6 @@ public class InventoryManager {
 	private void parseCommand(String comm) {
 		String[] splitCmd = comm.split(" ");
 		switch (splitCmd[0]) {
-			case "new-transaction": newTransaction(splitCmd[2],splitCmd[3]);
-				break;
 			case "view-data": viewData(splitCmd[2]);
 				break;
 			//other commands go here
@@ -49,22 +47,8 @@ public class InventoryManager {
 	
 	private void printCommands() {
 		System.out.println("Sample Commands:\n"
-				+ "    new-transaction args: customerID productID\n"
 				+ "    view-data args: tableName"
 				+ "    ");
-	}
-	
-	private void newTransaction(String customerID, String productID) {
-		try {
-			int custID = Integer.parseInt(customerID);
-			int prodID = Integer.parseInt(productID);
-			
-			//Database interaction goes here
-			
-			System.out.println("Successful Transaction!");
-		} catch (Exception e) {
-			System.out.println("Invalid Command Arguments.");
-		}
 	}
 	
 	private void viewData(String tableName) {
