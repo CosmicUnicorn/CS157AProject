@@ -41,9 +41,15 @@ public class ShoppingManager {
 	private void parseCommand(String comm) {
 		String[] splitCmd = comm.split(" ");
 		switch (splitCmd[0]) {
-			case "new-transaction": newTransaction(splitCmd[2]);
+			case "place-order": order(splitCmd[2]);
 				break;
 			case "view-products": viewStockedProducts();
+				break;
+			case "view-products-cheap": viewCheapProducts();
+				break;
+			case "cancel-order": cancelOrder(splitCmd[2]);
+				break;
+			case "change-address": changeAddress(splitCmd[2]);
 				break;
 			//other commands go here
 			default: System.out.println("Invalid Command: " + splitCmd[0]);
@@ -53,18 +59,45 @@ public class ShoppingManager {
 	
 	private void printCommands() {
 		System.out.println("Sample Commands:\n"
-				+ "new-transaction args: productID\n"
+				+ "place-order args: productID\n"
 				+ "view-products\n"
+				+ "cancel-order args: orderID\n"
+				+ "change-address args: newAddress\n"
+				+ "view-products-cheap\n"
 				+ "");
 	}
 	
-	private void newTransaction(String productID) {
+	private void order(String productID) {
 		try {
 			int prodID = Integer.parseInt(productID);
 			
 			//Database interaction goes here
 			
-			System.out.println("Successful Transaction!");
+			System.out.println("Order Placed!");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+	
+	private void cancelOrder(String orderID) {
+		try {
+			int oID = Integer.parseInt(orderID);
+			
+			//Database interaction goes here
+			
+			System.out.println("Order Cancelled.");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+	
+	private void changeAddress(String newAddress) {
+		try {
+			int newAddr = Integer.parseInt(newAddress);
+			
+			//Database interaction goes here
+			
+			System.out.println("Address Changed.");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
 		}
@@ -72,7 +105,18 @@ public class ShoppingManager {
 	
 	private void viewStockedProducts() {
 		try {
-			System.out.println("Showing Products...");
+			System.out.println("Showing Stocked Products...");
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("");//insert query here
+			printResult(rs);
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+	
+	private void viewCheapProducts() {
+		try {
+			System.out.println("Showing Cheap Products...");
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("");//insert query here
 			printResult(rs);
