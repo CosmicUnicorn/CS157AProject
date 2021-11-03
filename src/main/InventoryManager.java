@@ -55,6 +55,13 @@ public class InventoryManager {
 				break;
 			case "view-maximum-cost": viewMaximumCost();
 				break;
+			case "view-customer-with-order-issue": viewCustomerWithOrderIssue();
+				break;
+			case "view-customer-by-product-cost": viewCustomerByProductCost();
+				break;
+			case "delete-supplier-with-no-product": deleteSuppliers();
+				break;
+				
 			//other commands go here
 			default: System.out.println("Invalid Command: " + splitCmd[0]);
 				break;
@@ -71,7 +78,9 @@ public class InventoryManager {
 				+ "view-missing-orders\n"
 				+ "view-average-cost\n"
 				+ "view-minimum-cost\n"
-				+ "view-maximum-cost\n"
+				+ "delete-supplier-with-no-product\n"
+				+ "view-customer-with-order-issue\n"
+				+ "view-customer-by-product-cost\n"
 				+ "");
 	}
 	
@@ -177,6 +186,40 @@ public class InventoryManager {
 		}
 	}
 	
+	private void viewCustomerWithOrderIssue() {
+		try {
+			System.out.println(" ");
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("Showing customers having late or missing orders");//insert query here
+			printResult(rs);
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+
+	private void viewCustomerByProductCost() {
+		try {
+			System.out.println(" ");
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("Showing customers with at least one order that has a product cost that exceeds the average product cost");//insert query here
+			printResult(rs);
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+	
+	private void deleteSuppliers() {
+		try {
+			System.out.println(" ");
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("Delete suppliers who have no products to sell");//insert query here
+			printResult(rs);
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+	
+
 	private void printResult(ResultSet rs) throws SQLException{
 		rsmd  = rs.getMetaData();
 		int columnsNumber = rsmd.getColumnCount();
