@@ -7,7 +7,7 @@ drop table if exists Transactions;
 drop table if exists ArchivedOrders;
 
 create table Orders (
-    customerID int not null references Customers(id),
+    customerID int not null references Customers(id) on delete cascade,
     transactionID int not null primary key references Transactions(id),
     productID int references Products(id),
     status text,
@@ -32,7 +32,7 @@ create table Products (
     cost double not null,
     quantity int,
     weight double,
-    supplierID int not null references Suppliers(id)
+    supplierID int references Suppliers(id) on delete set null
 );
 
 create table Suppliers (
@@ -42,13 +42,13 @@ create table Suppliers (
 
 create table Transactions (
     id int auto_increment primary key,
-    customerID int references Customers(id),
+    customerID int references Customers(id) on delete cascade,
     totalAmount double default 0.0,
     transactionDate date
 );
 
 create table ArchivedOrders (
-    customerID int references Customers(id),
+    customerID int references Customers(id) on delete cascade,
     transactionID int primary key references Transactions(id),
     productID int references Products(id),
     status text,
