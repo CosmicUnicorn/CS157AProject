@@ -6,59 +6,51 @@ drop table if exists Suppliers;
 drop table if exists Transactions;
 drop table if exists ArchivedOrders;
 
-create table Orders {
-    id int auto_increment,
-    customerID int not null,
-    transactionID int not null,
+create table Orders (
+    customerID int not null references Customers(id),
+    transactionID int not null primary key references Transactions(id),
+    productID int references Products(id),
     status text,
-    updatedAt date,
-    primary key(id)
-}
+    updatedAt date
+);
 
-create table Admin {
-    id int auto_increment,
+create table Admin (
+    id int auto_increment primary key,
     name text not null,
-    password text not null,
-    primary key(id)
-}
+    password text not null
+);
 
-create table Customers {
-    id int auto_increment,
+create table Customers (
+    id int auto_increment primary key,
     name text not null,
-    address text not null,
-    primary key(id)
-}
+    address text not null
+);
 
-create table Products {
-    id int auto_increment,
+create table Products (
+    id int auto_increment primary key,
     title text not null,
     cost double not null,
     quantity int,
     weight double,
-    supplierID int not null,
-    primary key(id)
-}
+    supplierID int not null references Suppliers(id)
+);
 
-create table Suppliers {
-    id int auto_increment,
-    name text not null,
-    primary key(id)
-}
+create table Suppliers (
+    id int auto_increment primary key,
+    name text not null
+);
 
-create table Transactions {
-    id int auto_increment,
-    customerID int,
-    productID int,
+create table Transactions (
+    id int auto_increment primary key,
+    customerID int references Customers(id),
     totalAmount double default 0.0,
-    transactionDate date,
-    primary key(id)
-}
+    transactionDate date
+);
 
-create table ArchivedOrders {
-    orderID int auto_increment,
-    customerID int,
-    transactionID int,
+create table ArchivedOrders (
+    customerID int references Customers(id),
+    transactionID int primary key references Transactions(id),
+    productID int references Products(id),
     status text,
-    updatedAt date,
-    primary key(id)
-}
+    updatedAt date
+);
