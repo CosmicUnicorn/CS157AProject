@@ -91,7 +91,6 @@ public class ShoppingManager {
 			}
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
-			e.printStackTrace();
 		}
 	}
 	
@@ -144,10 +143,11 @@ public class ShoppingManager {
 		try {
 			System.out.println("Showing products with the same supplier...");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select * from Products P1 where id != any (select id from Products where P1.supplier = supplier);");
+			rs = stmt.executeQuery("select * from Products P1 where id != any (select id from Products where supplierID = P1.supplierID);");
 			printResult(rs);
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
+			e.printStackTrace();
 		}
 	}
 	
