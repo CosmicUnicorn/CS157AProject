@@ -30,12 +30,12 @@ public class ShoppingManager {
 			System.out.print("--> ");
 			String command = scnr.nextLine();
 			if(command.equals("logout")) {
+				System.out.println("Logout Successful.");
 				break;
 			}
 			parseCommand(command);
 		}
 		
-		scnr.close();
 	}
 	
 	private void parseCommand(String comm) {

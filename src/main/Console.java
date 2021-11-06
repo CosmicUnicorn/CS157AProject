@@ -32,17 +32,21 @@ public class Console {
         InventoryManager invMan = new InventoryManager(connection);
         ShoppingManager shopMan = new ShoppingManager(connection);
         
-        //since schema doesn't exist yet, leave the code below commented out...
-        /*
+        
         String command = "";
         Scanner scnr = new Scanner(System.in);
         while(command != "quit") {
-        	System.out.println("Sign in as a customer or administrator. Or register as a customer.\n"
+        	System.out.println("\nSign in as a customer or administrator. Or register as a customer.\n"
         			+ "Commands: \n "
-        			+ "customer <username> <password>\n"
-        			+ "admin <username> <password>\n"
-        			+ "register <username> <password> <name> <address>\n");
+        			+ "	customer <username> <password>\n"
+        			+ "	admin <username> <password>\n"
+        			+ "	register <username> <password> <name> <address>\n"
+        			+ "	quit\n"
+        			+ "\n");
+        	System.out.print("--> ");
+        	
         	command = scnr.nextLine();
+        	
         	String[] splitCmd = command.split(" ");
         	
         	
@@ -51,10 +55,11 @@ public class Console {
 	        	stmt = connection.createStatement();
 	        	if(splitCmd[0].equals("admin")) {
 	        		
-	        		rs = stmt.executeQuery("select customerID from Admin "
-	        				+ "where username='"+splitCmd[1]+"' and password='"+splitCmd[2]+"'");
+	        		rs = stmt.executeQuery("select id from Admin "
+	        				+ "where name='"+splitCmd[1]+"' and password='"+splitCmd[2]+"';");
 	        		
 	        		if(rs.next()) {
+	        			System.out.println("Login Successful!");
 	        			invMan.run();
 	        		}
 	        		else {
@@ -63,10 +68,11 @@ public class Console {
 	        	}
 	        	else if(splitCmd[0].equals("customer")) {
 	        		
-	    			rs = stmt.executeQuery("select customerID from Customers "
-	    					+ "where username='"+splitCmd[1]+"' and password='"+splitCmd[2]+"'");
+	    			rs = stmt.executeQuery("select id from Customers "
+	    					+ "where username='"+splitCmd[1]+"' and password='"+splitCmd[2]+"';");
 	    			
 	        		if(rs.next()) {
+	        			System.out.println("Login Successful!");
 	        			int customerID = rs.getInt("id");
 	        			shopMan.run(customerID);
 	        		}
@@ -75,7 +81,7 @@ public class Console {
 	        		}
 	        	}
 	        	else if(splitCmd[0].equals("register")) {
-	        		stmt.execute("insert into Customers values ('"+splitCmd[3]+"','"+splitCmd[1]+"','"+splitCmd[2]+"','"+splitCmd[4]+"')");
+	        		stmt.execute("insert into Customers (name, username, password, address) values ('"+splitCmd[3]+"','"+splitCmd[1]+"','"+splitCmd[2]+"','"+splitCmd[4]+"');");
 	        		System.out.println("Registration Successful!");
 	        	}
 	        	else if(splitCmd[0].equals("quit")) {
@@ -90,8 +96,7 @@ public class Console {
         		System.out.println("SQL error: " + e);
         		e.printStackTrace();
         	}
-        }*/
-        invMan.run();
-        
+        }
+        scnr.close();    
 	}
 }

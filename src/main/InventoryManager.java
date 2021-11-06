@@ -26,12 +26,12 @@ public class InventoryManager {
 			System.out.print("--> ");
 			String command = scnr.nextLine();
 			if(command.equals("logout")) {
+				System.out.println("Logout Successful.");
 				break;
 			}
 			parseCommand(command);
 		}
 		
-		scnr.close();
 	}
 	
 	private void parseCommand(String comm) {
@@ -89,7 +89,7 @@ public class InventoryManager {
 		try {
 			System.out.println("Showing data for " + tableName + "...");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select * from " + tableName);
+			rs = stmt.executeQuery("select * from " + tableName + ";");
 			printResult(rs);
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
