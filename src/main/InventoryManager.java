@@ -1,6 +1,5 @@
 package main;
 
-import java.sql.Connection;
 import java.util.Scanner;
 import java.sql.*;
 
@@ -233,9 +232,6 @@ public class InventoryManager {
 		    for (int i = 1; i <= columnsNumber; i++) {
 		    	
 		        if (i > 1) {
-		        	for(int j = 0; j < rsmd.getColumnName(i).length() - rs.getString(i).length(); j++) {
-		        		System.out.print(" ");
-		        	}
 		        	System.out.print(" | ");
 		        }
 		        String columnValue = rs.getString(i);

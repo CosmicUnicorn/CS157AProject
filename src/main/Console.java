@@ -50,7 +50,6 @@ public class Console {
         	String[] splitCmd = command.split(" ");
         	
         	
-        	//may need to change queries in the future if schema isn't BCNF
         	try{
 	        	stmt = connection.createStatement();
 	        	if(splitCmd[0].equals("admin")) {
