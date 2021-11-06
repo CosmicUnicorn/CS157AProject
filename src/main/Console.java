@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.util.Scanner;
 
 public class Console {
-	
-	public static final String PWRD = "RetributionSword2002";
 
 	public static void main(String[] args)
 	{
@@ -18,7 +16,7 @@ public class Console {
 		ResultSet rs;
 
         try {
-               connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/inventoryDB?serverTimezone=UTC","root", PWRD);
+               connection = DriverManager.getConnection("jdbc:mysql://tutorial-db.cmimggwftooj.us-east-2.rds.amazonaws.com:3306/157ProjectDB?serverTimezone=UTC","157user1", "user1pwd");
         } catch (SQLException e) {
                 System.out.println("Connection Failed...");
                 e.printStackTrace();
@@ -82,6 +80,7 @@ public class Console {
 	        	}
 	        	else if(splitCmd[0].equals("quit")) {
 	        		System.out.println("Program Terminated");
+	        		connection.close();
 	        		break;
 	        	}
 	        	else {
@@ -93,5 +92,6 @@ public class Console {
         	}
         }*/
         invMan.run();
+        
 	}
 }

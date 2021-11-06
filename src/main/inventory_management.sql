@@ -141,23 +141,6 @@ VALUES
 	("admin1", "111222333"),
     ("admin2", "333222111");
     
-    
-INSERT INTO Orders(customerID, transactionID, productID, quantity, status)
-VALUES
-	(1, 1, 3, 10, "delivered"),
-	(1, 2, 1, 2, "delayed"),
-	(2, 3, 1, 15, "shipped"),
-    (2, 4, 2, 10, "delivered"),
-    (2, 5, 5, 50, "delayed"),
-    (3, 6, 9, 5, "delivered"),
-    (3, 7, 4, 20, "canceled"),
-    (4, 8, 7, 1, "shipped"),
-    (4, 9, 8, 2, "shipped"),
-    (5, 10, 8, 3, "canceled"),
-    (5, 11, 2, 10, "delivered"),
-    (6, 12, 1, 5, "delivered"),
-    (6, 13, 9, 7, "canceled");
-    
 INSERT INTO Transactions (customerID, productID, quantity, totalAmount)
 VALUES
 	(1, 3, 10, 140.98),
