@@ -25,7 +25,7 @@ public class InventoryManager {
 		while(true) {
 			System.out.print("--> ");
 			String command = scnr.nextLine();
-			if(command.equals("quit")) {
+			if(command.equals("logout")) {
 				break;
 			}
 			parseCommand(command);
@@ -81,6 +81,7 @@ public class InventoryManager {
 				+ "delete-supplier-with-no-product\n"
 				+ "view-customer-with-order-issue\n"
 				+ "view-customer-by-product-cost\n"
+				+ "logout\n"
 				+ "");
 	}
 	

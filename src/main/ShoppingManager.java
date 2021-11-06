@@ -29,7 +29,7 @@ public class ShoppingManager {
 		while(true) {
 			System.out.print("--> ");
 			String command = scnr.nextLine();
-			if(command.equals("quit")) {
+			if(command.equals("logout")) {
 				break;
 			}
 			parseCommand(command);
@@ -67,6 +67,7 @@ public class ShoppingManager {
 				+ "change-address args: newAddress\n"
 				+ "view-products-cheap\n"
 				+ "view-products-low-stock\n"
+				+ "logout\n"
 				+ "");
 	}
 	
