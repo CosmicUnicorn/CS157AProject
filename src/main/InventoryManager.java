@@ -40,7 +40,15 @@ public class InventoryManager {
 				break;
 			case "insert-product": insertProduct(splitCmd[2]);
 				break;
-			case "update-product": updateProduct(splitCmd[2]);
+			case "update-product-title": updateProductTitle(splitCmd[2], splitCmd[3]);
+				break;
+			case "update-product-cost": updateProductCost(splitCmd[2], splitCmd[3]);
+				break;
+			case "update-product-quantity": updateProductQuantity(splitCmd[2], splitCmd[3]);
+				break;
+			case "update-product-weight": updateProductWeight(splitCmd[2], splitCmd[3]);
+				break;
+			case "update-product-supplierID": updateProductSupplierID(splitCmd[2], splitCmd[3]);
 				break;
 			case "delete-product": deleteProduct(splitCmd[2]);
 				break;
@@ -58,7 +66,9 @@ public class InventoryManager {
 				break;
 			case "view-customer-by-product-cost": viewCustomerByProductCost();
 				break;
-			case "delete-supplier-with-no-product": deleteSuppliers();
+			case "insert-supplier": insertSupplier(splitCmd[2]);
+				break;
+			case "delete-supplier-with-no-product": deleteSuppliers(splitCmd[2]);
 				break;
 				
 			//other commands go here
@@ -70,13 +80,18 @@ public class InventoryManager {
 	private void printCommands() {
 		System.out.println("Sample Commands:\n"
 				+ "view-data args: tableName\n"
-				+ "insert-product args: newProduct (separated by ', ')\n"
-				+ "update-product args: productID\n"
+				+ "insert-product args: newProduct (separated by ',')\n"
+				+ "update-product-title args: productID, newTitle\n"
+				+ "update-product-cost args: productID, newCost\n"
+				+ "update-product-quantity args: productID, newQuantity\n"
+				+ "update-product-weight args: productID, newWeight\n"
+				+ "update-product-supplierID args: productID, newSupplierID\n"
 				+ "delete-product args: productID\n"
 				+ "view-late-orders\n"
 				+ "view-missing-orders\n"
 				+ "view-average-cost\n"
 				+ "view-minimum-cost\n"
+				+ "insert-supplier\n"
 				+ "delete-supplier-with-no-product\n"
 				+ "view-customer-with-order-issue\n"
 				+ "view-customer-by-product-cost\n"
@@ -97,22 +112,75 @@ public class InventoryManager {
 
 	private void insertProduct(String newProduct) {
 		try {
-			String[] productDetails = newProduct.split(", ");
-
-			//Database interaction goes here
-
+			String[] productDetails = newProduct.split(",");
+			if (productDetails.length != 5) {
+				System.out.println("Please input all required fields, separated by commas!");
+			}
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(
+				"insert into Products (title, cost, quantity, weight, supplierID) values("
+				+productDetails[0]+", "+productDetails[1]+", "+productDetails[2]+", "+
+				productDetails[3]+", "+productDetails[4]+");"
+			);
 			System.out.println("Product Added!");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
 		}
 	}
 
-	private void updateProduct(String productID) {
+	private void updateProductTitle(String productID, String newTitle) {
 		try {
 			int prodID = Integer.parseInt(productID);
+			stmt = conn.createStatement();
+			stmt.execute("update Products set title = "+newTitle+" where id = "+prodID+";");
+			System.out.println("Product Title Updated!");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
 
-			//Database interaction goes here
+	private void updateProductCost(String productID, String newCost) {
+		try {
+			int prodID = Integer.parseInt(productID);
+			double cost = Double.parseDouble(newCost);
+			stmt = conn.createStatement();
+			stmt.execute("update Products set cost = "+cost+" where id = "+prodID+";");
+			System.out.println("Product Cost Updated!");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
 
+	private void updateProductQuantity(String productID, String newQuantity) {
+		try {
+			int prodID = Integer.parseInt(productID);
+			int qty = Integer.parseInt(newQuantity);
+			stmt = conn.createStatement();
+			stmt.execute("update Products set quantity = "+qty+" where id = "+prodID+";");
+			System.out.println("Product Quantity Updated!");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+
+	private void updateProductWeight(String productID, String newWeight) {
+		try {
+			int prodID = Integer.parseInt(productID);
+			double weight = Double.parseDouble(newWeight);
+			stmt = conn.createStatement();
+			stmt.execute("update Products set weight = "+weight+" where id = "+prodID+";");
+			System.out.println("Product Weight Updated!");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+
+	private void updateProductSupplierID(String productID, String newSupplierID) {
+		try {
+			int prodID = Integer.parseInt(productID);
+			int supID = Integer.parseInt(newSupplierID);
+			stmt = conn.createStatement();
+			stmt.execute("update Products set supplierID = "+supID+" where id = "+prodID+";");
 			System.out.println("Product Updated!");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
@@ -122,9 +190,8 @@ public class InventoryManager {
 	private void deleteProduct(String productID) {
 		try {
 			int prodID = Integer.parseInt(productID);
-
-			//Database interaction goes here
-
+			stmt = conn.createStatement();
+			stmt.execute("update Product set quantity=0 where id = "+prodID+";");
 			System.out.println("Product Deleted!");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
@@ -207,18 +274,27 @@ public class InventoryManager {
 			System.out.println("Invalid Command Arguments.");
 		}
 	}
-	
-	private void deleteSuppliers() {
+
+	private void insertSupplier(String newSupplier) {
 		try {
-			System.out.println(" ");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("Delete suppliers who have no products to sell");//insert query here
-			printResult(rs);
+			rs = stmt.executeQuery("insert into Suppliers (name) values("+newSupplier+");");
+			System.out.println("Supplier Added!");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
 		}
 	}
 	
+	private void deleteSuppliers(String supplierID) {
+		try {
+			int supID = Integer.parseInt(supplierID);
+			stmt = conn.createStatement();
+			stmt.execute("delete from Suppliers where id = "+supID+";");
+			System.out.println("Supplier Deleted!");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
 
 	private void printResult(ResultSet rs) throws SQLException{
 		rsmd  = rs.getMetaData();
