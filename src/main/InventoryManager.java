@@ -72,7 +72,8 @@ public class InventoryManager {
 				break;
 			case "delete-supplier-with-no-product": deleteSuppliers(splitCmd[2]);
 				break;
-				
+			case "archive-orders": archiveOrders(splitCmd[2]);
+				break;
 			//other commands go here
 			default: System.out.println("Invalid Command: " + splitCmd[0]);
 				break;
@@ -97,6 +98,7 @@ public class InventoryManager {
 				+ "view-high-value-customers\n"
 				+ "insert-supplier\n"
 				+ "delete-supplier-with-no-product\n"
+				+ "archive-orders args: cutoffDate"
 				+ "logout\n"
 				+ "");
 	}
@@ -109,6 +111,18 @@ public class InventoryManager {
 			printResult(rs);
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
+		}
+	}
+	
+	private void archiveOrders(String cutoffDate) {
+		try {
+			String sql = "{call archiveOldOrders(?)}";
+			CallableStatement cstmt = conn.prepareCall(sql);
+			cstmt.setString(1, cutoffDate+" 00:00:00");
+			cstmt.execute();
+			System.out.println("Orders Successfully Archived.");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments. Remember that cutoffDate is in the form yyyy-mm-dd");
 		}
 	}
 
