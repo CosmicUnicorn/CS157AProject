@@ -148,7 +148,7 @@ public class InventoryManager {
 		try {
 			int prodID = Integer.parseInt(productID);
 			stmt = conn.createStatement();
-			stmt.execute("update Products set title = "+newTitle+" where id = "+prodID+";");
+			stmt.execute("update Products set title = '"+newTitle+"' where id = "+prodID+";");
 			System.out.println("Product Title Updated!");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
