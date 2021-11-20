@@ -231,7 +231,7 @@ public class InventoryManager {
 		try {
 			System.out.println("Showing Missing Orders...");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select customerId, name from Customers where id in "
+			rs = stmt.executeQuery("select customerID, name from Customers where id in "
 					+ "(select customerID from Orders where status = 'lost' or status = 'missing');");
 			System.out.println("Customers with lost/missing orders: ");
 			printResult(rs);

@@ -47,8 +47,6 @@ public class ShoppingManager {
 				break;
 			case "cancel-order": cancelOrder(splitCmd[2]);
 				break;
-			case "change-address": changeAddress(splitCmd[2]);
-				break;
 			case "view-supplier-products": viewSupplierProducts();
 				break;
 			case "view-orders": viewOrders();
@@ -65,7 +63,6 @@ public class ShoppingManager {
 				+ "view-products\n"
 				+ "view-orders\n"
 				+ "cancel-order args: orderID\n"
-				+ "change-address args: newAddress\n"
 				+ "view-supplier-products\n"
 				+ "logout\n"
 				+ "");
@@ -100,18 +97,6 @@ public class ShoppingManager {
 			stmt = conn.createStatement();
 			stmt.execute("update Orders set status = “cancelled” where transactionID = "+oID+";");
 			System.out.println("Order Cancelled.");
-		} catch (Exception e) {
-			System.out.println("Invalid Command Arguments.");
-		}
-	}
-	
-	private void changeAddress(String newAddress) {
-		try {
-			int newAddr = Integer.parseInt(newAddress);
-			
-			//Database interaction goes here
-			
-			System.out.println("Address Changed.");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
 		}
