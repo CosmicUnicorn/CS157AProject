@@ -218,7 +218,7 @@ public class InventoryManager {
 	private void viewLateOrders() {
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select customerId, name from Customers where id in "
+			rs = stmt.executeQuery("select customerID, name from Customers where id in "
 					+ "(select customerID from Orders where status = 'late');");
 			System.out.println("Customers with late orders: ");
 			printResult(rs);
