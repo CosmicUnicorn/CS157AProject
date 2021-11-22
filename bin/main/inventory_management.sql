@@ -56,8 +56,9 @@ create table ArchivedOrders (
     customerID int references Customers(id) on delete cascade,
     transactionID int primary key references Transactions(id),
     productID int references Products(id),
+    quantity int,
     status text,
-    updatedAt date
+    updatedAt datetime
 );
 
 
@@ -105,6 +106,16 @@ FOR EACH ROW
     WHERE Suppliers.id IN ( SELECT supplierID FROM Products GROUP BY supplierID HAVING SUM(quantity) = 0);//
 delimiter ;
 
+-- Procedure to archive orders that are older than 6 months
+DROP PROCEDURE IF EXISTS archiveOldOrders;
+delimiter //
+CREATE PROCEDURE archiveOldOrders(IN cutoffDate DATETIME)
+BEGIN
+    INSERT INTO ArchivedOrders SELECT * FROM Orders WHERE updatedAt < cutoffDate;
+    DELETE FROM Orders WHERE updatedAt < cutoffDate;
+END//
+DELIMITER ;
+
 -- SAMPLE DATA
 
 INSERT INTO Suppliers(name)
@@ -134,7 +145,8 @@ VALUES
     ("Iris Watson","IWusername","pwd", "3727 Ullamcorper. Street, Roseville, NH 11523" ),
     ("Theodore Lowe","TLusername","pwd", "Ap #867-859 Sit Rd., Azusa, NY 39531" ),
     ("Calista Wise","CWusername","pwd", "2292 Dictum Av., San Antonio, MI 47096" ),
-    ("Kyla Olsen", "KOusername","pwd","Ap #651-8679 Sodales Av. Tamuning, PA 10855" );
+    ("Kyla Olsen", "KOusername","pwd","Ap #651-8679 Sodales Av. Tamuning, PA 10855" ),
+    ("Test Name", "user1","pwd","Ap #650-8679 Sodales Av. Tamuning, PA 10855" );
 
 INSERT INTO Admin(name, password)
 VALUES 

@@ -62,7 +62,7 @@ public class ShoppingManager {
 				+ "place-order args: productID quantity\n"
 				+ "view-products\n"
 				+ "view-orders\n"
-				+ "cancel-order args: orderID\n"
+				+ "cancel-order args: transactionID\n"
 				+ "view-supplier-products\n"
 				+ "logout\n"
 				+ "");
@@ -95,7 +95,7 @@ public class ShoppingManager {
 		try {
 			int oID = Integer.parseInt(orderID);
 			stmt = conn.createStatement();
-			stmt.execute("update Orders set status = “cancelled” where transactionID = "+oID+";");
+			stmt.execute("update Orders set status = 'cancelled' where transactionID = "+oID+";");
 			System.out.println("Order Cancelled.");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
