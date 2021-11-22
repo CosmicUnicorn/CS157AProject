@@ -16,7 +16,7 @@ public class Console {
 		ResultSet rs;
 
         try {
-               connection = DriverManager.getConnection("jdbc:mysql://tutorial-db.cmimggwftooj.us-east-2.rds.amazonaws.com:3306/157ProjectDB?serverTimezone=UTC","157user1", "user1pwd");
+        	connection = DriverManager.getConnection("jdbc:mysql://tutorial-db.cmimggwftooj.us-east-2.rds.amazonaws.com:3306/157ProjectDB?serverTimezone=UTC","157user1", "user1pwd");
         } catch (SQLException e) {
                 System.out.println("Connection Failed...");
                 e.printStackTrace();

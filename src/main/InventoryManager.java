@@ -68,9 +68,12 @@ public class InventoryManager {
 				break;	
 			case "view-all-orders": viewAllOrders();
 				break;	
-			case "insert-supplier": insertSupplier(splitCmd[2]);
+			case "insert-supplier": {
+				if (splitCmd.length==3) insertSupplier(splitCmd[2]);
+				else insertSupplierWithID(splitCmd[2], splitCmd[3]);
 				break;
-			case "delete-supplier-with-no-product": deleteSuppliers(splitCmd[2]);
+			}
+			case "delete-supplier": deleteSuppliers(splitCmd[2]);
 				break;
 			case "archive-orders": archiveOrders(splitCmd[2]);
 				break;
@@ -94,10 +97,12 @@ public class InventoryManager {
 				+ "view-missing-orders\n"
 				+ "view-average-cost\n"
 				+ "view-minimum-cost\n"
+				+ "view-maximum-cost\n"
 				+ "view-customers-and-products\n"
 				+ "view-high-value-customers\n"
-				+ "insert-supplier\n"
-				+ "delete-supplier-with-no-product\n"
+				+ "view-all-orders\n"
+				+ "insert-supplier args: supplierName supplierID(optional)\n"
+				+ "delete-supplier args: supplierID\n"
 				+ "archive-orders args: cutoffDate"
 				+ "logout\n"
 				+ "");
@@ -133,13 +138,14 @@ public class InventoryManager {
 				System.out.println("Please input all required fields, separated by commas!");
 			}
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery(
-				"insert into Products (title, cost, quantity, weight, supplierID) values("
-				+productDetails[0]+", "+productDetails[1]+", "+productDetails[2]+", "+
+			stmt.executeUpdate(
+				"insert into Products (title, cost, quantity, weight, supplierID) values('"
+				+productDetails[0]+"', "+productDetails[1]+", "+productDetails[2]+", "+
 				productDetails[3]+", "+productDetails[4]+");"
 			);
 			System.out.println("Product Added!");
 		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			System.out.println("Invalid Command Arguments.");
 		}
 	}
@@ -294,14 +300,12 @@ public class InventoryManager {
 	
 	private void viewHighValuedCustomers() {
 		try {
-
 			stmt = conn.createStatement();
 			rs = stmt.executeQuery("select C.id as Customer ID, C.name as Name, avg(T.totalAmount) as Average Payment\n"
 					+ "from Customers C, Transactions T\n"
 					+ "where C.id = T.customerID\n"
 					+ "group by C.id, C.name\n"
 					+ "having avg(T.totalAmount) > (select avg(totalAmount) from Transactions);\n"
-					+ ""
 					);
 			System.out.println("High-value customers: ");
 			printResult(rs);
@@ -324,9 +328,21 @@ public class InventoryManager {
 	private void insertSupplier(String newSupplier) {
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("insert into Suppliers (name) values("+newSupplier+");");
+			stmt.executeUpdate("insert into Suppliers (name) values('"+newSupplier+"');");
 			System.out.println("Supplier Added!");
 		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
+
+	private void insertSupplierWithID(String newName, String newID) {
+		try {
+			int supID = Integer.parseInt(newID);
+			stmt = conn.createStatement();
+			stmt.execute("insert into Suppliers values("+supID+", '"+newName+"');");
+			System.out.println("SSupplier Added!");
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
 			System.out.println("Invalid Command Arguments.");
 		}
 	}
