@@ -301,7 +301,7 @@ public class InventoryManager {
 	private void viewHighValuedCustomers() {
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select C.id as Customer ID, C.name as Name, avg(T.totalAmount) as Average Payment\n"
+			rs = stmt.executeQuery("select C.id as Customer_ID, C.name as Name, avg(T.totalAmount) as Average_Payment\n"
 					+ "from Customers C, Transactions T\n"
 					+ "where C.id = T.customerID\n"
 					+ "group by C.id, C.name\n"
@@ -340,7 +340,7 @@ public class InventoryManager {
 			int supID = Integer.parseInt(newID);
 			stmt = conn.createStatement();
 			stmt.execute("insert into Suppliers values("+supID+", '"+newName+"');");
-			System.out.println("SSupplier Added!");
+			System.out.println("Supplier Added!");
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 			System.out.println("Invalid Command Arguments.");
