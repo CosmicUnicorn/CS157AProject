@@ -1,10 +1,11 @@
+drop table if exists ArchivedOrders;
 drop table if exists Orders;
 drop table if exists Admin;
+drop table if exists Transactions;
 drop table if exists Customers;
 drop table if exists Products;
 drop table if exists Suppliers;
-drop table if exists Transactions;
-drop table if exists ArchivedOrders;
+
 
 create table Admin (
     id int auto_increment primary key,
@@ -34,7 +35,6 @@ create table Products (
     supplierID int,
     FOREIGN KEY (supplierID) REFERENCES Suppliers(id)
 );
-
 
 
 create table Transactions (

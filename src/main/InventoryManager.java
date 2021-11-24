@@ -50,6 +50,8 @@ public class InventoryManager {
 				break;
 			case "update-product-supplierID": updateProductSupplierID(splitCmd[2], splitCmd[3]);
 				break;
+			case "update-order-status": updateOrderStatus(splitCmd[2], splitCmd[3]);
+				break;
 			case "delete-product": deleteProduct(splitCmd[2]);
 				break;
 			case "view-late-orders": viewLateOrders();
@@ -87,11 +89,12 @@ public class InventoryManager {
 		System.out.println("Sample Commands:\n"
 				+ "view-data args: tableName\n"
 				+ "insert-product args: newProduct (separated by ',')\n"
-				+ "update-product-title args: productID, newTitle\n"
-				+ "update-product-cost args: productID, newCost\n"
-				+ "update-product-quantity args: productID, newQuantity\n"
-				+ "update-product-weight args: productID, newWeight\n"
-				+ "update-product-supplierID args: productID, newSupplierID\n"
+				+ "update-product-title args: productID newTitle\n"
+				+ "update-product-cost args: productID newCost\n"
+				+ "update-product-quantity args: productID newQuantity\n"
+				+ "update-product-weight args: productID newWeight\n"
+				+ "update-product-supplierID args: productID newSupplierID\n"
+				+ "update-order-status args: transactionID newStatus\n"
 				+ "delete-product args: productID\n"
 				+ "view-late-orders\n"
 				+ "view-missing-orders\n"
@@ -202,7 +205,7 @@ public class InventoryManager {
 			int prodID = Integer.parseInt(productID);
 			int supID = Integer.parseInt(newSupplierID);
 			stmt = conn.createStatement();
-			stmt.execute("update Products set supplierID = "+supID+" where id = "+prodID+";");
+			stmt.execute("update Products set supplierID = '"+supID+"' where id = "+prodID+";");
 			System.out.println("Product Updated!");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
@@ -213,18 +216,28 @@ public class InventoryManager {
 		try {
 			int prodID = Integer.parseInt(productID);
 			stmt = conn.createStatement();
-			stmt.execute("update Product set quantity=0 where id = "+prodID+";");
+			stmt.execute("update Products set quantity=0 where id = "+prodID+";");
 			System.out.println("Product Deleted!");
 		} catch (Exception e) {
 			System.out.println("Invalid Command Arguments.");
 		}
 	}
 
+	private void updateOrderStatus(String transactionID, String newStatus){
+		try {
+			int tId = Integer.parseInt(transactionID);			
+			stmt = conn.createStatement();
+			stmt.execute("update Orders set status = '"+ newStatus + "' where transactionID = "+tId+";");
+			System.out.println("Order's Status Updated!");
+		} catch (Exception e) {
+			System.out.println("Invalid Command Arguments.");
+		}
+	}
 	
 	private void viewLateOrders() {
 		try {
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select customerID, name from Customers where id in "
+			rs = stmt.executeQuery("select id, name from Customers where id in "
 					+ "(select customerID from Orders where status = 'late');");
 			System.out.println("Customers with late orders: ");
 			printResult(rs);
@@ -235,9 +248,8 @@ public class InventoryManager {
 
 	private void viewMissingOrders() {
 		try {
-			System.out.println("Showing Missing Orders...");
 			stmt = conn.createStatement();
-			rs = stmt.executeQuery("select customerID, name from Customers where id in "
+			rs = stmt.executeQuery("select id, name from Customers where id in\n"
 					+ "(select customerID from Orders where status = 'lost' or status = 'missing');");
 			System.out.println("Customers with lost/missing orders: ");
 			printResult(rs);
