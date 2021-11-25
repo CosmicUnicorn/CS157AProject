@@ -94,7 +94,6 @@ public class InventoryManager {
 				+ "update-product-quantity args: productID newQuantity\n"
 				+ "update-product-weight args: productID newWeight\n"
 				+ "update-product-supplierID args: productID newSupplierID\n"
-				+ "update-order-status args: transactionID newStatus\n"
 				+ "delete-product args: productID\n"
 				+ "view-late-orders\n"
 				+ "view-missing-orders\n"
@@ -257,7 +256,6 @@ public class InventoryManager {
 			System.out.println("Invalid Command Arguments.");
 		}
 	}
-
 	
 	private void viewAverageCost() {
 		try {
